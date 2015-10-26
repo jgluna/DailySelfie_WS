@@ -1,4 +1,4 @@
-package com.github.jgluna;
+package com.github.jgluna.ws;
 
 /**
  * Hello world!
