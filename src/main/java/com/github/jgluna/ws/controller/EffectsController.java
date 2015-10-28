@@ -1,22 +1,46 @@
 package com.github.jgluna.ws.controller;
 
 import com.github.jgluna.ws.model.EffectsRequestWrapper;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.http.Part;
-import retrofit.mime.TypedFile;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
-public class EffectsController implements EffectsControllerInterface {
+public class EffectsController {
 
+    private static final String BASE_PATH = "/effect";
+    private static final String IMAGE_PARAM = "";
+
+    @ResponseBody
     @RequestMapping(value = BASE_PATH, method = RequestMethod.POST)
-    public Void applyEffect(@Part(IMAGE_PARAMETER) TypedFile image,
-                            @Part(WRAPPER_PARAMETER) EffectsRequestWrapper effectsWrapper,
-                            Callback<Response> callback) {
-        System.out.println("Recibi un rikues");
-        return null;
+    public ResponseEntity<InputStreamResource> applyEffect(@RequestParam(value = IMAGE_PARAM) MultipartFile image,
+                                                           @RequestBody EffectsRequestWrapper effectsWrapper) {
+        InputStream is;
+        try {
+            is = image.getInputStream();
+            if (is != null) {
+                System.out.println("image received!! yay!!");
+            } else {
+                System.out.println("buuuuuuuu");
+            }
+            //TODO processing
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //TODO change for production code, this is only to test the service
+        System.out.println("Received request");
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("kitten.png");
+        if (resourceAsStream != null) {
+            System.out.println("Kitten found!!");
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(resourceAsStream));
+        } else {
+            System.out.println("Kitten not found :'(");
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }
