@@ -23,7 +23,7 @@ public class App {
     public MultipartConfigElement getMultipartConfigElement() {
         MultipartConfigFactory f = new MultipartConfigFactory();
         //f.setMaxFileSize(1);
-        f.setMaxRequestSize(1);
+        f.setMaxRequestSize(50000);
         return f.createMultipartConfig();
     }
 }

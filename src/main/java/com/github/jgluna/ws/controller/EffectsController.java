@@ -9,17 +9,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @RestController
 public class EffectsController {
 
     private static final String BASE_PATH = "/effect";
-    private static final String IMAGE_PARAM = "";
+    private static final String IMAGE_PARAM = "image";
+    private static final String BODY_PARAM = "body";
 
     @ResponseBody
     @RequestMapping(value = BASE_PATH, method = RequestMethod.POST)
     public ResponseEntity<InputStreamResource> applyEffect(@RequestParam(value = IMAGE_PARAM) MultipartFile image,
-                                                           @RequestBody EffectsRequestWrapper effectsWrapper) {
+                                                           @RequestParam(value = BODY_PARAM) List<String> effects) {
         InputStream is;
         try {
             is = image.getInputStream();

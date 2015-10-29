@@ -1,8 +1,9 @@
 package com.github.jgluna.ws.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class EffectsRequestWrapper {
+public class EffectsRequestWrapper implements Serializable{
     private Selfie selfie;
     private Set<String> effects;
 
