@@ -1,12 +1,13 @@
 package com.github.jgluna.ws.controller;
 
-import com.github.jgluna.ws.model.EffectsRequestWrapper;
+import com.github.jgluna.ws.effects.EffectsProcessor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -23,14 +24,15 @@ public class EffectsController {
     public ResponseEntity<InputStreamResource> applyEffect(@RequestParam(value = IMAGE_PARAM) MultipartFile image,
                                                            @RequestParam(value = BODY_PARAM) List<String> effects) {
         InputStream is;
+        EffectsProcessor processor = new EffectsProcessor();
         try {
             is = image.getInputStream();
             if (is != null) {
                 System.out.println("image received!! yay!!");
+                processor.applyEffects(ImageIO.read(is), effects);
             } else {
                 System.out.println("buuuuuuuu");
             }
-            //TODO processing
         } catch (IOException e) {
             e.printStackTrace();
         }

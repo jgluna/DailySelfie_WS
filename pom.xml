@@ -31,16 +31,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- <dependency>
-             <groupId>com.squareup.retrofit</groupId>
-             <artifactId>retrofit</artifactId>
-             <version>1.9.0</version>
-         </dependency>-->
-        <!-- <dependency>
-             <groupId>commons-io</groupId>
-             <artifactId>commons-io</artifactId>
-             <version>2.4</version>
-         </dependency>-->
+        <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>filters</artifactId>
+            <version>2.0.235-1</version>
+        </dependency>
     </dependencies>
 
     <build>
