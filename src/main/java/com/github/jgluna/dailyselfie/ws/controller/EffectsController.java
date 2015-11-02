@@ -20,12 +20,12 @@ public class EffectsController {
 
     private static final String BASE_PATH = "/effect";
     private static final String IMAGE_PARAM = "image";
-    private static final String BODY_PARAM = "body";
+    private static final String EFFECTS_PARAM = "effects";
 
     @ResponseBody
     @RequestMapping(value = BASE_PATH, method = RequestMethod.POST)
     public ResponseEntity<InputStreamResource> applyEffect(@RequestParam(value = IMAGE_PARAM) MultipartFile image,
-                                                           @RequestParam(value = BODY_PARAM) List<String> effects) {
+                                                           @RequestParam(value = EFFECTS_PARAM) List<String> effects) {
         InputStream is;
         EffectsProcessor processor = new EffectsProcessor();
         BufferedImage outputImage = null;
@@ -43,7 +43,7 @@ public class EffectsController {
         if (outputImage != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try {
-                ImageIO.write(outputImage, "png", baos);
+                ImageIO.write(outputImage, "jpg", baos);
                 return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(new ByteArrayInputStream(baos.toByteArray())));
             } catch (IOException e) {
                 e.printStackTrace();
