@@ -1,6 +1,6 @@
-package com.github.jgluna.ws.controller;
+package com.github.jgluna.dailyselfie.ws.controller;
 
-import com.github.jgluna.ws.effects.EffectsProcessor;
+import com.github.jgluna.dailyselfie.ws.effects.core.EffectsProcessor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -25,25 +28,28 @@ public class EffectsController {
                                                            @RequestParam(value = BODY_PARAM) List<String> effects) {
         InputStream is;
         EffectsProcessor processor = new EffectsProcessor();
+        BufferedImage outputImage = null;
         try {
             is = image.getInputStream();
             if (is != null) {
                 System.out.println("image received!! yay!!");
-                processor.applyEffects(ImageIO.read(is), effects);
+                outputImage = processor.applyEffects(ImageIO.read(is), effects);
             } else {
                 System.out.println("buuuuuuuu");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //TODO change for production code, this is only to test the service
-        System.out.println("Received request");
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("kitten.png");
-        if (resourceAsStream != null) {
-            System.out.println("Kitten found!!");
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(resourceAsStream));
+        if (outputImage != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(outputImage, "png", baos);
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(new ByteArrayInputStream(baos.toByteArray())));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.badRequest().body(null);
+            }
         } else {
-            System.out.println("Kitten not found :'(");
             return ResponseEntity.badRequest().body(null);
         }
     }
