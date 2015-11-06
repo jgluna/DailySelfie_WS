@@ -15,15 +15,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+@RequestMapping("/effect")
 @RestController
 public class EffectsController {
 
-    private static final String BASE_PATH = "/effect";
+    private static final String APPLY_PATH = "/apply";
     private static final String IMAGE_PARAM = "image";
     private static final String EFFECTS_PARAM = "effects";
 
     @ResponseBody
-    @RequestMapping(value = BASE_PATH, method = RequestMethod.POST)
+    @RequestMapping(value = APPLY_PATH, method = RequestMethod.POST)
     public ResponseEntity<InputStreamResource> applyEffect(@RequestParam(value = IMAGE_PARAM) MultipartFile image,
                                                            @RequestParam(value = EFFECTS_PARAM) List<String> effects) {
         InputStream is;
