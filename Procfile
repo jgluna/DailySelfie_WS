@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* App
+web java -Dserver.port=$PORT $JAVA_OPTS -jar target/daily-selfie-ws-1.0-SNAPSHOT.jar
